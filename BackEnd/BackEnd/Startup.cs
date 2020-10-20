@@ -27,6 +27,11 @@ namespace BackEnd
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DevConnection")));
+
+            services.AddCors(options => options.AddPolicy("AllowWebApp",
+                      builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()
+                      ));
+            
             services.AddControllers();
         }
 
@@ -37,6 +42,8 @@ namespace BackEnd
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors("AllowWebApp");
 
             app.UseHttpsRedirection();
 
